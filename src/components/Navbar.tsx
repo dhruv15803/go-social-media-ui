@@ -1,6 +1,6 @@
 import { AuthContext } from "@/Contexts/AuthContext";
 import type { AuthContextType } from "@/types";
-import { HomeIcon, SearchIcon, UserIcon } from "lucide-react";
+import { BellIcon, HomeIcon, SearchIcon, UserIcon } from "lucide-react";
 import { useContext } from "react";
 import { NavLink } from "react-router";
 
@@ -18,6 +18,11 @@ const Navbar = () => {
       icon: <HomeIcon />,
       link: "/",
       text: "Home",
+    },
+    {
+      icon: <BellIcon />,
+      link: "/notifications",
+      text: "Notifications",
     },
     {
       icon: <SearchIcon />,

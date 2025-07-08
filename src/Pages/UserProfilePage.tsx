@@ -45,6 +45,7 @@ const UserProfilePage = () => {
       if (userProfile?.is_public === false) {
         // send a  follow request
         requestUrl = `${API_URL}/api/user/${userId}/follow-request`;
+
         const response = await axios.post<{
           success: boolean;
           message: string;
@@ -153,29 +154,49 @@ const UserProfilePage = () => {
       <div className="flex flex-col border-2 rounded-lg p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {userProfile ? (
+            {userProfile !== null &&
+            userProfile.image_url !== null &&
+            userProfile.image_url !== "" ? (
               <img
                 src={userProfile.image_url!}
-                className="w-24 h-24 rounded-full"
+                className="w-12 h-12 rounded-full"
               />
             ) : (
               <UserIcon />
             )}
 
             <div className="flex flex-col gap-2">
-              <span className="text-lg font-semibold">
-                @{userProfile?.username}
-              </span>
-
               <div className="flex items-center justify-between">
-                {userProfile?.location !== null && (
-                  <div className="flex items-center gap-1">
-                    <FaLocationDot />
-                    <span className="font-semibold">
-                      {userProfile?.location}
-                    </span>
-                  </div>
-                )}
+                <span className="text-lg font-semibold">
+                  @{userProfile?.username}
+                </span>
+                {loggedInUser !== null &&
+                  loggedInUser.id !== parseInt(userId) && (
+                    <Button
+                      onClick={() => handleFollowAction(followStatus)}
+                      className={` border-2 ${
+                        followStatus === "follow"
+                          ? "bg-teal-500 text-white"
+                          : followStatus === "following"
+                          ? "border-teal-500 text-teal-500 bg-white"
+                          : "bg-white text-black"
+                      }`}
+                    >
+                      {followStatus}
+                    </Button>
+                  )}
+              </div>
+
+              <div className="flex items-center gap-6">
+                {userProfile?.location !== null &&
+                  userProfile?.location !== "" && (
+                    <div className="flex items-center gap-1">
+                      <FaLocationDot />
+                      <span className="font-semibold">
+                        {userProfile?.location}
+                      </span>
+                    </div>
+                  )}
 
                 <div className="flex items-center gap-1">
                   <CiCalendarDate />
@@ -190,31 +211,18 @@ const UserProfilePage = () => {
                 </div>
               </div>
               <div>
-                {loggedInUser?.id === parseInt(userId) && (
-                  <Button
-                    onClick={() => navigate("/user/profile/edit")}
-                    variant="outline"
-                    className="text-teal-500 border-2 border-teal-500 hover:bg-teal-500 hover:text-white hover:duration-300"
-                  >
-                    Edit Profile
-                  </Button>
-                )}
+                {loggedInUser !== null &&
+                  loggedInUser.id === parseInt(userId) && (
+                    <Button
+                      onClick={() => navigate("/user/profile/edit")}
+                      variant="outline"
+                      className="text-teal-500 border-2 border-teal-500 hover:bg-teal-500 hover:text-white hover:duration-300"
+                    >
+                      Edit Profile
+                    </Button>
+                  )}
               </div>
             </div>
-            {loggedInUser?.id !== parseInt(userId) && (
-              <Button
-                onClick={() => handleFollowAction(followStatus)}
-                className={` border-2 ${
-                  followStatus === "follow"
-                    ? "bg-teal-500 text-white"
-                    : followStatus === "following"
-                    ? "border-teal-500 text-teal-500 bg-white"
-                    : "bg-white text-black"
-                }`}
-              >
-                {followStatus}
-              </Button>
-            )}
           </div>
         </div>
         <div className="flex items-center justify-between">

@@ -166,7 +166,7 @@ const CreatePost = ({
     <>
       <div className="border-2 rounded-lg p-4 flex flex-col">
         <div className="flex items-center gap-2">
-          {loggedInUser.image_url !== null ? (
+          {loggedInUser.image_url !== null && loggedInUser.image_url !== "" ? (
             <img
               src={loggedInUser.image_url}
               className="rounded-full w-12 h-12"

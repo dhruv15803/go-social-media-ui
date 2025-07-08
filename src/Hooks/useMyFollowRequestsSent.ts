@@ -23,7 +23,7 @@ export const useMyFollowRequestsSent = () => {
         });
         setFollowRequests(response.data.follow_requests);
       } catch (error) {
-        toast("failed to get sent follow requests");
+        console.log(error);
       } finally {
         setIsLoading(false);
       }

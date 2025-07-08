@@ -91,4 +91,21 @@ export type FollowRequest = {
   request_at: string;
 };
 
+export type FollowRequestWithSender = FollowRequest & {
+  request_sender: User;
+};
+
 export type UserFollowStatus = "follow" | "requested" | "following";
+
+export type Notification = {
+  id: number;
+  user_id: number;
+  notification_type: "like" | "comment";
+  actor_id: number;
+  notification_created_at: string;
+  post_id: number;
+};
+
+export type NotificationWithActor = Notification & {
+  actor: User;
+};

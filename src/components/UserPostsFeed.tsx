@@ -45,15 +45,24 @@ const UserPostsFeed = ({ refetchPostsFlag, setRefetchPostsFlag }: Props) => {
     <>
       <div className="flex flex-col gap-2 my-2">
         <div className="flex flex-col gap-4">
-          {posts.map((post) => {
-            return (
-              <PostCard
-                key={post.id}
-                post={post}
-                onDeletePost={handleDeletePostById}
-              />
-            );
-          })}
+          {posts !== null &&
+            posts.map((post) => {
+              return (
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  onDeletePost={handleDeletePostById}
+                />
+              );
+            })}
+
+          {(posts === null || posts.length === 0) && (
+            <>
+              <div className="flex items-center justify-center mt-12 font-semibold text-xl">
+                No activity
+              </div>
+            </>
+          )}
         </div>
 
         <Pagination

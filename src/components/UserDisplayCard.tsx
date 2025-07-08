@@ -1,15 +1,24 @@
-import type { Follow, FollowRequest, User, UserFollowStatus } from "@/types";
+import type {
+  AuthContextType,
+  Follow,
+  FollowRequest,
+  User,
+  UserFollowStatus,
+} from "@/types";
 import { UserIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { useUserFollowStatus } from "@/Hooks/useUserFollowStatus";
 import { API_URL } from "@/App";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "@/Contexts/AuthContext";
 
 type Props = {
   user: User;
 };
 
 const UserDisplayCard = ({ user }: Props) => {
+  const { loggedInUser } = useContext(AuthContext) as AuthContextType;
   const {
     userFollowStatus: followStatus,
     setFollowRequests,
@@ -92,7 +101,6 @@ const UserDisplayCard = ({ user }: Props) => {
       });
     } else {
       // send a follow to remove follow
-
       requestUrl = `${API_URL}/api/user/${user.id}/follow`;
 
       await axios.post(
@@ -117,24 +125,26 @@ const UserDisplayCard = ({ user }: Props) => {
     <div key={user.id} className="flex items-center justify-between">
       <div className="flex items-center gap-2">
         {user.image_url !== null ? (
-          <img className="border-2 rounded-full p-2" src={user.image_url} />
+          <img className="rounded-full w-12 h-12" src={user.image_url} />
         ) : (
           <UserIcon />
         )}
         <span className="font-semibold">{user.username}</span>
       </div>
-      <Button
-        onClick={() => handleFollowAction(followStatus)}
-        className={` border-2 ${
-          followStatus === "follow"
-            ? "bg-teal-500 text-white"
-            : followStatus === "following"
-            ? "border-teal-500 text-teal-500 bg-white"
-            : "bg-white text-black"
-        }`}
-      >
-        {followStatus}
-      </Button>
+      {user.id !== loggedInUser?.id && (
+        <Button
+          onClick={() => handleFollowAction(followStatus)}
+          className={` border-2 ${
+            followStatus === "follow"
+              ? "bg-teal-500 text-white"
+              : followStatus === "following"
+              ? "border-teal-500 text-teal-500 bg-white"
+              : "bg-white text-black"
+          }`}
+        >
+          {followStatus}
+        </Button>
+      )}
     </div>
   );
 };

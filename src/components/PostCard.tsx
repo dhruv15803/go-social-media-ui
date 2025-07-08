@@ -31,7 +31,7 @@ import { BsThreeDots } from "react-icons/bs";
 type Props = {
   post: PostWithMetaData;
   postCommentsCount?: number;
-  onDeletePost: (postId: number) => void;
+  onDeletePost?: (postId: number) => void;
 };
 
 const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
@@ -77,6 +77,8 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
   );
 
   const handleBookmarkPost = async () => {
+    if (loggedInUser === null) return;
+
     const prevBookmarksCount = postBookmarksCount;
     const prevBookmarks = bookmarks;
 
@@ -120,6 +122,8 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
   };
 
   const handleLikePost = async () => {
+    if (loggedInUser === null) return;
+
     const prevLikesCount = postLikesCount;
     const prevLikes = likes;
 
@@ -181,15 +185,16 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
-                {post.user_id === loggedInUser?.id && (
-                  <DropdownMenuItem
-                    onClick={() => onDeletePost(post.id)}
-                    className="flex items-center gap-1"
-                  >
-                    <TrashIcon />
-                    <span>Delete post</span>
-                  </DropdownMenuItem>
-                )}
+                {post.user_id === loggedInUser?.id &&
+                  onDeletePost !== undefined && (
+                    <DropdownMenuItem
+                      onClick={() => onDeletePost(post.id)}
+                      className="flex items-center gap-1"
+                    >
+                      <TrashIcon />
+                      <span>Delete post</span>
+                    </DropdownMenuItem>
+                  )}
                 <DropdownMenuItem></DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -200,7 +205,7 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
             onClick={() => navigate(`/user/${post.user.id}/profile`)}
             className="flex items-center gap-2"
           >
-            {post.user.image_url !== null ? (
+            {post.user.image_url !== null && post.user.image_url !== "" ? (
               <img
                 className="border-2 rounded-full p-1 border-teal-500 w-12 h-12"
                 src={post.user.image_url}
@@ -217,27 +222,31 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
         {post.post_images !== null && post.post_images.length !== 0 && (
           <>
             <div className="p-2 my-4 w-full flex items-center justify-center">
-              <button
-                onClick={() => setSelectedPostImageIndex((prev) => prev - 1)}
-                disabled={selectedPostImageIndex === 0}
-                className="text-3xl"
-              >
-                <IoIosArrowBack />
-              </button>
+              {post.post_images.length > 1 && (
+                <button
+                  onClick={() => setSelectedPostImageIndex((prev) => prev - 1)}
+                  disabled={selectedPostImageIndex === 0}
+                  className="text-3xl"
+                >
+                  <IoIosArrowBack />
+                </button>
+              )}
               <img
                 className="w-full aspect-auto rounded-lg"
                 src={post.post_images[selectedPostImageIndex].post_image_url}
                 alt=""
               />
-              <button
-                onClick={() => setSelectedPostImageIndex((prev) => prev + 1)}
-                disabled={
-                  selectedPostImageIndex === post.post_images.length - 1
-                }
-                className="text-3xl"
-              >
-                <IoIosArrowForward />
-              </button>
+              {post.post_images.length > 1 && (
+                <button
+                  onClick={() => setSelectedPostImageIndex((prev) => prev + 1)}
+                  disabled={
+                    selectedPostImageIndex === post.post_images.length - 1
+                  }
+                  className="text-3xl"
+                >
+                  <IoIosArrowForward />
+                </button>
+              )}
             </div>
             {post.post_images.length > 1 && (
               <div className="flex items-center justify-center gap-1">

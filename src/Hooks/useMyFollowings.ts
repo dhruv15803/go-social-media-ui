@@ -2,7 +2,6 @@ import { API_URL } from "@/App";
 import type { Follow } from "@/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
 export const useMyFollowings = () => {
   const [followings, setFollowings] = useState<Follow[] | null>(null);
@@ -21,8 +20,8 @@ export const useMyFollowings = () => {
         });
 
         setFollowings(response.data.followings);
-      } catch (error) {
-        toast("failed to fetch authenticated user's followings");
+      } catch (error: any) {
+        console.log(error);
       } finally {
         setIsLoading(false);
       }

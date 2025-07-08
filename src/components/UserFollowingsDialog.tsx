@@ -54,8 +54,18 @@ const UserFollowingsDialog = ({
               <>
                 {followings !== null &&
                   followings.map((following) => {
-                    return <UserDisplayCard user={following} />;
+                    return (
+                      <UserDisplayCard user={following} key={following.id} />
+                    );
                   })}
+
+                {(followings === null || followings.length === 0) && (
+                  <>
+                    <div className="flex items-center justify-center font-semibold">
+                      No Followings
+                    </div>
+                  </>
+                )}
               </>
             )}
             <div className="flex items-center justify-center">
