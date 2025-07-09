@@ -124,14 +124,14 @@ const UserDisplayCard = ({ user }: Props) => {
   return (
     <div key={user.id} className="flex items-center justify-between">
       <div className="flex items-center gap-2">
-        {user.image_url !== null ? (
+        {user.image_url !== null && user.image_url !== "" ? (
           <img className="rounded-full w-12 h-12" src={user.image_url} />
         ) : (
           <UserIcon />
         )}
         <span className="font-semibold">{user.username}</span>
       </div>
-      {user.id !== loggedInUser?.id && (
+      {loggedInUser !== null && user.id !== loggedInUser.id && (
         <Button
           onClick={() => handleFollowAction(followStatus)}
           className={` border-2 ${

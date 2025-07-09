@@ -9,6 +9,7 @@ import UserProfilePage from "./Pages/UserProfilePage";
 import ProtectedRoute from "./Layouts/ProtectedRoute";
 import EditProfilePage from "./Pages/EditProfilePage";
 import NotificationsPage from "./Pages/NotificationsPage";
+import SearchPage from "./Pages/SearchPage";
 
 export const API_URL = import.meta.env.VITE_API_URL as string;
 
@@ -25,7 +26,7 @@ function App() {
                 path="/user/:userId/profile"
                 element={<UserProfilePage />}
               />
-
+              <Route path="/search" element={<SearchPage/>}/> 
               <Route element={<ProtectedRoute />}>
                 <Route
                   path="/user/profile/edit"

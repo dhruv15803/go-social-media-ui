@@ -34,6 +34,7 @@ export const useUserPosts = (
         setPosts(response.data.posts);
         setNoOfPages(response.data.noOfPages);
       } catch (error: any) {
+        console.log(error);
         setError(error.response.data.message);
       } finally {
         setIsLoading(false);

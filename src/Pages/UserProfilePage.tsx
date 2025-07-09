@@ -153,7 +153,7 @@ const UserProfilePage = () => {
     <>
       <div className="flex flex-col border-2 rounded-lg p-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full">
             {userProfile !== null &&
             userProfile.image_url !== null &&
             userProfile.image_url !== "" ? (
@@ -165,8 +165,8 @@ const UserProfilePage = () => {
               <UserIcon />
             )}
 
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 w-full">
+              <div className="flex items-center gap-4">
                 <span className="text-lg font-semibold">
                   @{userProfile?.username}
                 </span>

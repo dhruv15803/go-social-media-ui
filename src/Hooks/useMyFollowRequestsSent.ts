@@ -2,7 +2,6 @@ import { API_URL } from "@/App";
 import type { FollowRequest } from "@/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
 export const useMyFollowRequestsSent = () => {
   const [followRequests, setFollowRequests] = useState<FollowRequest[] | null>(

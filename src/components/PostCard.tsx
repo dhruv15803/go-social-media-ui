@@ -104,20 +104,19 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
       bookmarks !== null
         ? setBookmarks((prev) => [...prev!, newBookmark])
         : setBookmarks([newBookmark]);
-
-      try {
-        await axios.post(
-          `${API_URL}/api/post/${post.id}/bookmark`,
-          {},
-          {
-            withCredentials: true,
-          }
-        );
-      } catch (error) {
-        setPostBookmarksCount(prevBookmarksCount);
-        setBookmarks(prevBookmarks);
-        toast("failed to bookmark");
-      }
+    }
+    try {
+      await axios.post(
+        `${API_URL}/api/post/${post.id}/bookmark`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+    } catch (error) {
+      setPostBookmarksCount(prevBookmarksCount);
+      setBookmarks(prevBookmarks);
+      toast("failed to bookmark");
     }
   };
 
@@ -129,12 +128,14 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
 
     if (isLikedByLoggedInUser) {
       setPostLikesCount((prev) => prev - 1);
+
       const newLikes = likes?.filter(
         (like) => like.liked_by_id !== loggedInUser?.id
       );
       setLikes(newLikes!);
     } else {
       setPostLikesCount((prev) => prev + 1);
+
       const newLike: Like = {
         liked_by_id: loggedInUser?.id!,
         liked_post_id: post.id,

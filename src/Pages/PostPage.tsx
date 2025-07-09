@@ -22,6 +22,7 @@ const PostPage = () => {
   const [refetchCommentsFlag, setRefetchCommentsFlag] =
     useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
+
   const {
     comments,
     isLoading: isCommentsLoading,
@@ -32,6 +33,7 @@ const PostPage = () => {
     POSTS_PER_PAGE,
     refetchCommentsFlag
   );
+
   useEffect(() => {
     if (post === null) return;
     setPostCommentsCount(post.comments_count);
@@ -95,11 +97,21 @@ const PostPage = () => {
                   return <PostCard post={comment} key={comment.id} />;
                 })}
 
-              <Pagination
-                setPage={setPage}
-                noOfPages={noOfPages}
-                currentPage={page}
-              />
+              {(comments === null || comments.length === 0) && (
+                <>
+                  <div className="flex items-center justify-center font-normal">
+                    No Comments
+                  </div>
+                </>
+              )}
+
+              {noOfPages > 1 && (
+                <Pagination
+                  setPage={setPage}
+                  noOfPages={noOfPages}
+                  currentPage={page}
+                />
+              )}
             </div>
           </>
         )}
