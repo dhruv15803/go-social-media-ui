@@ -54,9 +54,9 @@ const NotificationCard = ({ notification }: Props) => {
         {post !== null && (
           <div
             onClick={() => navigate(`/post/${post.id}`)}
-            className="flex flex-row gap-2 hover:bg-gray-50 hover:duration-300 p-2"
+            className="flex flex-row gap-2 w-full hover:bg-gray-50 hover:duration-300 p-2"
           >
-            <div className="flex items-center flex-wrap gap-1 max-w-[40%]  ">
+            <div className="flex items-center flex-wrap gap-1 w-fit max-w-[60%]">
               {post.post_images.map((postImage) => {
                 return (
                   <img

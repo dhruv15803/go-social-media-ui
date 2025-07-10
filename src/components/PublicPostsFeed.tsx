@@ -27,10 +27,20 @@ const PublicPostsFeed = () => {
     <>
       <div className="flex flex-col gap-2 my-2">
         <div className="flex flex-col gap-4">
-          {posts.map((post) => {
-            return <PostCard key={post.id} post={post} />;
-          })}
+          {posts !== null &&
+            posts.length !== 0 &&
+            posts.map((post) => {
+              return <PostCard key={post.id} post={post} />;
+            })}
         </div>
+
+        {(posts === null || posts.length === 0) && (
+          <>
+            <div className="flex items-center justify-center mt-24 font-semibold text-xl">
+              No posts
+            </div>
+          </>
+        )}
 
         <Pagination
           noOfPages={noOfPages}

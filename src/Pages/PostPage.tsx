@@ -1,3 +1,4 @@
+import { API_URL } from "@/App";
 import CreatePost from "@/components/CreatePost";
 import Pagination from "@/components/Pagination";
 import PostCard from "@/components/PostCard";
@@ -7,11 +8,13 @@ import { AuthContext } from "@/Contexts/AuthContext";
 import { usePostComments } from "@/Hooks/usePostComments";
 import { usePostWithMetaData } from "@/Hooks/usePostWithMetaData";
 import type { AuthContextType } from "@/types";
-import { Loader } from "lucide-react";
+import axios from "axios";
+import { ArrowLeft, Loader } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 
 const PostPage = () => {
+  const navigate = useNavigate();
   const { loggedInUser } = useContext(AuthContext) as AuthContextType;
   const { postId } = useParams<{ postId: string }>();
   if (postId === undefined) return;
@@ -33,6 +36,17 @@ const PostPage = () => {
     POSTS_PER_PAGE,
     refetchCommentsFlag
   );
+
+  const handleDeletePostById = async (postId: number) => {
+    try {
+      await axios.delete(`${API_URL}/api/post/${postId}`, {
+        withCredentials: true,
+      });
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (post === null) return;
@@ -67,7 +81,20 @@ const PostPage = () => {
   return (
     <>
       <div className="flex flex-col">
-        <PostCard post={post} postCommentsCount={postCommentsCount} />
+        <div className="flex items-center justify-start m-2">
+          <Link
+            to=".."
+            className="flex items-center gap-1 text-teal-500 hover:underline hover:underline-offset-2"
+          >
+            <ArrowLeft />
+          </Link>
+        </div>
+
+        <PostCard
+          post={post}
+          postCommentsCount={postCommentsCount}
+          onDeletePost={handleDeletePostById}
+        />
 
         {isCommentsLoading ? (
           <>

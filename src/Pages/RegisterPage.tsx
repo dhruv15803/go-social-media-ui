@@ -10,9 +10,9 @@ import { Button } from "@/components/ui/button";
 import { EyeIcon, EyeOffIcon, Loader } from "lucide-react";
 import axios, { isAxiosError } from "axios";
 import { API_URL } from "@/App";
-import type { AuthContextType, RegisterUserResponse } from "@/types";
+import type { AuthContextType, RegisterUserResponse, User } from "@/types";
 import { AuthContext } from "@/Contexts/AuthContext";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const registerSchema = z
   .object({
@@ -35,8 +35,7 @@ const registerSchema = z
 type RegisterFormType = z.infer<typeof registerSchema>;
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
-  const { loggedInUser, isLoggedInUserLoading, setLoggedInUser } = useContext(
+  const { loggedInUser, isLoggedInUserLoading } = useContext(
     AuthContext
   ) as AuthContextType;
   const {
@@ -46,6 +45,7 @@ const RegisterPage = () => {
     setError,
     reset,
   } = useForm<RegisterFormType>({ resolver: zodResolver(registerSchema) });
+  const [registeredUser, setRegisteredUser] = useState<User | null>(null);
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
   const [isShowConfirmPassword, setIsShowConfirmPassword] =
     useState<boolean>(false);
@@ -69,10 +69,8 @@ const RegisterPage = () => {
           withCredentials: true,
         }
       );
-
-      setLoggedInUser(response.data.user);
+      setRegisteredUser(response.data.user);
       reset();
-      navigate("/");
     } catch (error: any) {
       console.log(error);
       if (isAxiosError(error)) {
@@ -97,6 +95,18 @@ const RegisterPage = () => {
 
   if (!isLoggedInUserLoading && loggedInUser !== null) {
     return <Navigate to="/" />;
+  }
+
+  if (registeredUser !== null) {
+    return (
+      <>
+        <div className="flex flex-row flex-wrap justify-center mt-24 gap-2">
+          Check your mail{" "}
+          <span className="font-semibold">{registeredUser.email}</span> to
+          verify and activate your account
+        </div>
+      </>
+    );
   }
 
   return (

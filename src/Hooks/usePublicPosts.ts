@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export const usePublicPosts = (page: number, limit: number) => {
-  const [posts, setPosts] = useState<PostWithMetaData[]>([]);
+  const [posts, setPosts] = useState<PostWithMetaData[] | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [noOfPages, setNoOfPages] = useState<number>(0);
 
@@ -16,7 +16,7 @@ export const usePublicPosts = (page: number, limit: number) => {
 
         const response = await axios.get<{
           success: boolean;
-          posts: PostWithMetaData[];
+          posts: PostWithMetaData[] | null;
           noOfPages: number;
         }>(`${API_URL}/api/post/posts?page=${page}&limit=${limit}`);
 

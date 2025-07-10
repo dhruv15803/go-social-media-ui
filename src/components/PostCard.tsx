@@ -178,7 +178,7 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
   return (
     <>
       <div className="flex flex-col border-2 p-4 rounded-lg">
-        {loggedInUser?.id === post.user_id && (
+        {loggedInUser?.id === post.user_id && onDeletePost !== undefined && (
           <div className="flex items-center justify-end my-2">
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -186,16 +186,14 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent>
-                {post.user_id === loggedInUser?.id &&
-                  onDeletePost !== undefined && (
-                    <DropdownMenuItem
-                      onClick={() => onDeletePost(post.id)}
-                      className="flex items-center gap-1"
-                    >
-                      <TrashIcon />
-                      <span>Delete post</span>
-                    </DropdownMenuItem>
-                  )}
+                <DropdownMenuItem
+                  onClick={() => onDeletePost(post.id)}
+                  className="flex items-center gap-1"
+                >
+                  <TrashIcon />
+                  <span>Delete post</span>
+                </DropdownMenuItem>
+
                 <DropdownMenuItem></DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

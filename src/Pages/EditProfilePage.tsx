@@ -157,7 +157,6 @@ const EditProfilePage = () => {
               onChange={(e) => setNewBio(e.target.value)}
               name="bio"
               id="bio"
-              readOnly
               placeholder="Enter bio"
             />
           </div>
@@ -170,7 +169,6 @@ const EditProfilePage = () => {
               onChange={(e) => setNewLocation(e.target.value)}
               id="location"
               name="location"
-              readOnly
             />
           </div>
 

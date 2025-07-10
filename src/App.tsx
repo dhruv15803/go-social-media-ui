@@ -10,6 +10,7 @@ import ProtectedRoute from "./Layouts/ProtectedRoute";
 import EditProfilePage from "./Pages/EditProfilePage";
 import NotificationsPage from "./Pages/NotificationsPage";
 import SearchPage from "./Pages/SearchPage";
+import VerifyEmail from "./Pages/VerifyEmail";
 
 export const API_URL = import.meta.env.VITE_API_URL as string;
 
@@ -26,7 +27,7 @@ function App() {
                 path="/user/:userId/profile"
                 element={<UserProfilePage />}
               />
-              <Route path="/search" element={<SearchPage/>}/> 
+              <Route path="/search" element={<SearchPage />} />
               <Route element={<ProtectedRoute />}>
                 <Route
                   path="/user/profile/edit"
@@ -36,6 +37,7 @@ function App() {
               </Route>
             </Route>
 
+            <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/signup" element={<RegisterPage />} />
             <Route path="/signin" element={<LoginPage />} />
           </Routes>
