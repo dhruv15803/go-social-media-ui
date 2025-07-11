@@ -138,6 +138,15 @@ const LoginByEmail = () => {
           </Link>
         </div>
 
+        <div>
+          <Link
+            to="/forgot-password"
+            className="text-teal-500 hover:underline hover:underline-offset-4"
+          >
+            Forgot password
+          </Link>
+        </div>
+
         {errors.root && <p className="text-red-500">{errors.root.message}</p>}
 
         <Button

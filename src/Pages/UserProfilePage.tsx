@@ -19,12 +19,15 @@ import UserFollowersDialog from "@/components/UserFollowersDialog";
 import { useUserFollowStatus } from "@/Hooks/useUserFollowStatus";
 import { API_URL } from "@/App";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const UserProfilePage = () => {
   const navigate = useNavigate();
   const { userId } = useParams<{ userId: string }>();
   if (userId === undefined) return <>user id not available</>;
-  const { loggedInUser } = useContext(AuthContext) as AuthContextType;
+  const { loggedInUser, setLoggedInUser } = useContext(
+    AuthContext
+  ) as AuthContextType;
   const { userProfile, isLoading: isUserProfileLoading } = useUserProfile(
     parseInt(userId)
   );
@@ -139,6 +142,21 @@ const UserProfilePage = () => {
     }
   };
 
+  const handleLogoutUser = async () => {
+    try {
+      await axios.get<{ success: boolean; message: string }>(
+        `${API_URL}/api/auth/logout`,
+        {
+          withCredentials: true,
+        }
+      );
+      setLoggedInUser(null);
+      navigate("/signin");
+    } catch (error) {
+      toast("failed to logout");
+    }
+  };
+
   if (isUserProfileLoading) {
     return (
       <>
@@ -151,7 +169,7 @@ const UserProfilePage = () => {
 
   return (
     <>
-      <div className="flex flex-col border-2 rounded-lg p-4">
+      <div className="flex flex-col border-2 rounded-lg p-4 ">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 w-full">
             {userProfile !== null &&
@@ -166,25 +184,36 @@ const UserProfilePage = () => {
             )}
 
             <div className="flex flex-col gap-2 w-full">
-              <div className="flex items-center gap-4">
-                <span className="text-lg font-semibold">
-                  @{userProfile?.username}
-                </span>
-                {loggedInUser !== null &&
-                  loggedInUser.id !== parseInt(userId) && (
-                    <Button
-                      onClick={() => handleFollowAction(followStatus)}
-                      className={` border-2 ${
-                        followStatus === "follow"
-                          ? "bg-teal-500 text-white"
-                          : followStatus === "following"
-                          ? "border-teal-500 text-teal-500 bg-white"
-                          : "bg-white text-black"
-                      }`}
-                    >
-                      {followStatus}
-                    </Button>
-                  )}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <span className="text-lg font-semibold">
+                    @{userProfile?.username}
+                  </span>
+                  {loggedInUser !== null &&
+                    loggedInUser.id !== parseInt(userId) && (
+                      <Button
+                        onClick={() => handleFollowAction(followStatus)}
+                        className={` border-2 ${
+                          followStatus === "follow"
+                            ? "bg-teal-500 text-white"
+                            : followStatus === "following"
+                            ? "border-teal-500 text-teal-500 bg-white"
+                            : "bg-white text-black"
+                        }`}
+                      >
+                        {followStatus}
+                      </Button>
+                    )}
+                </div>
+
+                {loggedInUser?.id === userProfile?.id && (
+                  <Button
+                    onClick={handleLogoutUser}
+                    className="bg-teal-500 text-white hover:bg-teal-600 hover:duration-300"
+                  >
+                    Logout
+                  </Button>
+                )}
               </div>
 
               <div className="flex items-center gap-6">
@@ -209,6 +238,9 @@ const UserProfilePage = () => {
                     </span>
                   )}
                 </div>
+              </div>
+              <div className="flex flex-row flex-wrap font-light">
+                {userProfile?.bio}
               </div>
               <div>
                 {loggedInUser !== null &&

@@ -37,6 +37,18 @@ const PostPage = () => {
     refetchCommentsFlag
   );
 
+  const handleDeleteCommentById = async (postId: number) => {
+    try {
+      await axios.delete(`${API_URL}/api/post/${postId}`, {
+        withCredentials: true,
+      });
+      setRefetchCommentsFlag((prev) => !prev);
+      setPostCommentsCount((prev) => prev - 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleDeletePostById = async (postId: number) => {
     try {
       await axios.delete(`${API_URL}/api/post/${postId}`, {
@@ -121,7 +133,13 @@ const PostPage = () => {
 
               {comments !== null &&
                 comments.map((comment) => {
-                  return <PostCard post={comment} key={comment.id} />;
+                  return (
+                    <PostCard
+                      post={comment}
+                      key={comment.id}
+                      onDeletePost={handleDeleteCommentById}
+                    />
+                  );
                 })}
 
               {(comments === null || comments.length === 0) && (

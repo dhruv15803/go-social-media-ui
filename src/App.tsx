@@ -11,6 +11,8 @@ import EditProfilePage from "./Pages/EditProfilePage";
 import NotificationsPage from "./Pages/NotificationsPage";
 import SearchPage from "./Pages/SearchPage";
 import VerifyEmail from "./Pages/VerifyEmail";
+import ForgotPasswordPage from "./Pages/ForgotPasswordPage";
+import ResetPasswordPage from "./Pages/ResetPasswordPage";
 
 export const API_URL = import.meta.env.VITE_API_URL as string;
 
@@ -37,9 +39,11 @@ function App() {
               </Route>
             </Route>
 
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/signup" element={<RegisterPage />} />
             <Route path="/signin" element={<LoginPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           </Routes>
         </AuthContextProvider>
       </Router>
