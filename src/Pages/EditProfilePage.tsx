@@ -8,8 +8,9 @@ import { AuthContext } from "@/Contexts/AuthContext";
 import type { AuthContextType, User } from "@/types";
 import { uploadFile } from "@/utils";
 import axios from "axios";
-import { Loader, UserIcon } from "lucide-react";
+import { ArrowLeft, Loader, UserIcon } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router";
 import { toast } from "react-toastify";
 
 const EditProfilePage = () => {
@@ -102,6 +103,15 @@ const EditProfilePage = () => {
 
   return (
     <>
+      <div className="flex items-center justify-start">
+        <Link
+          to={`/user/${loggedInUser?.id}/profile`}
+          className="m-2 text-teal-500 font-bold flex items-center gap-2"
+        >
+          <ArrowLeft />
+          <span>Back to profile</span>
+        </Link>
+      </div>
       <div className="flex flex-col border-2 rounded-lg p-4 mt-4 mx-2">
         <h1 className="font-semibold text-xl text-teal-500 mb-2">
           Edit Profile

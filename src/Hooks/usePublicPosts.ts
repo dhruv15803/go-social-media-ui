@@ -20,7 +20,18 @@ export const usePublicPosts = (page: number, limit: number) => {
           noOfPages: number;
         }>(`${API_URL}/api/post/posts?page=${page}&limit=${limit}`);
 
-        setPosts(response.data.posts);
+        if (response.data.posts !== null) {
+          setPosts((prevPosts) =>
+            prevPosts !== null
+              ? [...prevPosts, ...response.data.posts!]
+              : response.data.posts
+          );
+        } else {
+          setPosts((prevPosts) =>
+            prevPosts !== null ? prevPosts : response.data.posts
+          );
+        }
+
         setNoOfPages(response.data.noOfPages);
       } catch (error) {
         toast("failed to fetch public posts");

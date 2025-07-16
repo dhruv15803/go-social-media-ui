@@ -3,9 +3,10 @@ import { usePostsFeed } from "@/Hooks/usePostsFeed";
 import { Loader } from "lucide-react";
 import { useState, type SetStateAction } from "react";
 import PostCard from "./PostCard";
-import Pagination from "./Pagination";
 import axios from "axios";
 import { API_URL } from "@/App";
+import { useInView } from "react-intersection-observer";
+import { Button } from "./ui/button";
 
 type Props = {
   refetchPostsFlag: boolean;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 const UserPostsFeed = ({ refetchPostsFlag, setRefetchPostsFlag }: Props) => {
+  const { ref, inView } = useInView();
   const [page, setPage] = useState<number>(1);
   const {
     posts,
@@ -46,13 +48,15 @@ const UserPostsFeed = ({ refetchPostsFlag, setRefetchPostsFlag }: Props) => {
       <div className="flex flex-col gap-2 my-2">
         <div className="flex flex-col gap-4">
           {posts !== null &&
-            posts.map((post) => {
+            posts.map((post, idx) => {
               return (
-                <PostCard
-                  key={post.id}
-                  post={post}
-                  onDeletePost={handleDeletePostById}
-                />
+                <div key={post.id} ref={idx === posts.length - 1 ? ref : null}>
+                  <PostCard
+                    key={post.id}
+                    post={post}
+                    onDeletePost={handleDeletePostById}
+                  />
+                </div>
               );
             })}
 
@@ -63,13 +67,18 @@ const UserPostsFeed = ({ refetchPostsFlag, setRefetchPostsFlag }: Props) => {
               </div>
             </>
           )}
-        </div>
 
-        <Pagination
-          noOfPages={noOfPages}
-          currentPage={page}
-          setPage={setPage}
-        />
+          {noOfPages > 1 && inView && page !== noOfPages && (
+            <div className="flex items-center justify-center">
+              <Button
+                onClick={() => setPage((prevPage) => prevPage + 1)}
+                className="bg-teal-500 text-white hover:bg-teal-600 hover:duration-300"
+              >
+                Load More
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

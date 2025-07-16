@@ -3,7 +3,8 @@ import { usePublicPosts } from "@/Hooks/usePublicPosts";
 import { useState } from "react";
 import PostCard from "./PostCard";
 import { Loader } from "lucide-react";
-import Pagination from "./Pagination";
+import { useInView } from "react-intersection-observer";
+import { Button } from "./ui/button";
 
 const PublicPostsFeed = () => {
   const [page, setPage] = useState<number>(1);
@@ -12,6 +13,7 @@ const PublicPostsFeed = () => {
     isLoading: isPostsLoading,
     noOfPages,
   } = usePublicPosts(page, POSTS_PER_PAGE);
+  const { inView } = useInView();
 
   if (isPostsLoading) {
     return (
@@ -42,11 +44,16 @@ const PublicPostsFeed = () => {
           </>
         )}
 
-        <Pagination
-          noOfPages={noOfPages}
-          currentPage={page}
-          setPage={setPage}
-        />
+        {noOfPages > 1 && inView && page !== noOfPages && (
+          <div className="flex items-center justify-center">
+            <Button
+              onClick={() => setPage((prevPage) => prevPage + 1)}
+              className="bg-teal-500 text-white hover:bg-teal-600 hover:duration-300"
+            >
+              Load More
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );
