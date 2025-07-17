@@ -13,6 +13,7 @@ import SearchPage from "./Pages/SearchPage";
 import VerifyEmail from "./Pages/VerifyEmail";
 import ForgotPasswordPage from "./Pages/ForgotPasswordPage";
 import ResetPasswordPage from "./Pages/ResetPasswordPage";
+import LoginDialogLayout from "./Layouts/LoginDialogLayout";
 
 export const API_URL = import.meta.env.VITE_API_URL as string;
 
@@ -21,30 +22,35 @@ function App() {
     <>
       <Router>
         <AuthContextProvider>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/post/:postId" element={<PostPage />} />
-              <Route
-                path="/user/:userId/profile"
-                element={<UserProfilePage />}
-              />
-              <Route path="/search" element={<SearchPage />} />
-              <Route element={<ProtectedRoute />}>
+          <LoginDialogLayout>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/post/:postId" element={<PostPage />} />
                 <Route
-                  path="/user/profile/edit"
-                  element={<EditProfilePage />}
+                  path="/user/:userId/profile"
+                  element={<UserProfilePage />}
                 />
-                <Route path="/notifications" element={<NotificationsPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route
+                    path="/user/profile/edit"
+                    element={<EditProfilePage />}
+                  />
+                  <Route
+                    path="/notifications"
+                    element={<NotificationsPage />}
+                  />
+                </Route>
               </Route>
-            </Route>
 
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/signup" element={<RegisterPage />} />
-            <Route path="/signin" element={<LoginPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          </Routes>
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/signup" element={<RegisterPage />} />
+              <Route path="/signin" element={<LoginPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            </Routes>
+          </LoginDialogLayout>
         </AuthContextProvider>
       </Router>
     </>

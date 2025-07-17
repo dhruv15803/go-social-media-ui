@@ -36,9 +36,8 @@ type Props = {
 
 const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
   const navigate = useNavigate();
-  const { loggedInUser, isLoggedInUserLoading } = useContext(
-    AuthContext
-  ) as AuthContextType;
+  const { loggedInUser, isLoggedInUserLoading, setIsLoginModalOpen } =
+    useContext(AuthContext) as AuthContextType;
   const [selectedPostImageIndex, setSelectedPostImageIndex] =
     useState<number>(0);
   const [postLikesCount, setPostLikesCount] = useState<number>(
@@ -77,7 +76,10 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
   );
 
   const handleBookmarkPost = async () => {
-    if (loggedInUser === null) return;
+    if (loggedInUser === null) {
+      setIsLoginModalOpen(true);
+      return;
+    }
 
     const prevBookmarksCount = postBookmarksCount;
     const prevBookmarks = bookmarks;
@@ -121,7 +123,10 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
   };
 
   const handleLikePost = async () => {
-    if (loggedInUser === null) return;
+    if (loggedInUser === null) {
+      setIsLoginModalOpen(true);
+      return;
+    }
 
     const prevLikesCount = postLikesCount;
     const prevLikes = likes;

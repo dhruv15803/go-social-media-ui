@@ -1,11 +1,13 @@
 import { useAuthUser } from "@/Hooks/useAuthUser";
 import type { AuthContextType } from "@/types";
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
 
 export const AuthContext = createContext<AuthContextType>({
   loggedInUser: null,
   setLoggedInUser: () => {},
   isLoggedInUserLoading: true,
+  isLoginModalOpen: false,
+  setIsLoginModalOpen: () => {},
 });
 
 export const AuthContextProvider = ({
@@ -14,6 +16,7 @@ export const AuthContextProvider = ({
   children: React.ReactNode;
 }) => {
   const { authUser, isLoading, setAuthUser } = useAuthUser();
+  const [isShowLoginModal, setIsShowLoginModal] = useState<boolean>(false);
 
   console.log("Auth User :- ", authUser);
 
@@ -24,6 +27,8 @@ export const AuthContextProvider = ({
           loggedInUser: authUser,
           setLoggedInUser: setAuthUser,
           isLoggedInUserLoading: isLoading,
+          isLoginModalOpen: isShowLoginModal,
+          setIsLoginModalOpen: setIsShowLoginModal,
         }}
       >
         {children}

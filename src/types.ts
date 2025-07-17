@@ -30,6 +30,8 @@ export type AuthContextType = {
   loggedInUser: User | null;
   setLoggedInUser: React.Dispatch<SetStateAction<User | null>>;
   isLoggedInUserLoading: boolean;
+  isLoginModalOpen: boolean;
+  setIsLoginModalOpen: React.Dispatch<SetStateAction<boolean>>;
 };
 
 export type Post = {
