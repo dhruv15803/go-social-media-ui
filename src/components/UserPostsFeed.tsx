@@ -5,8 +5,7 @@ import { useState, type SetStateAction } from "react";
 import PostCard from "./PostCard";
 import axios from "axios";
 import { API_URL } from "@/App";
-import { useInView } from "react-intersection-observer";
-import { Button } from "./ui/button";
+import Pagination from "./Pagination";
 
 type Props = {
   refetchPostsFlag: boolean;
@@ -14,7 +13,6 @@ type Props = {
 };
 
 const UserPostsFeed = ({ refetchPostsFlag, setRefetchPostsFlag }: Props) => {
-  const { ref, inView } = useInView();
   const [page, setPage] = useState<number>(1);
   const {
     posts,
@@ -48,15 +46,13 @@ const UserPostsFeed = ({ refetchPostsFlag, setRefetchPostsFlag }: Props) => {
       <div className="flex flex-col gap-2 my-2">
         <div className="flex flex-col gap-4">
           {posts !== null &&
-            posts.map((post, idx) => {
+            posts.map((post) => {
               return (
-                <div key={post.id} ref={idx === posts.length - 1 ? ref : null}>
-                  <PostCard
-                    key={post.id}
-                    post={post}
-                    onDeletePost={handleDeletePostById}
-                  />
-                </div>
+                <PostCard
+                  key={post.id}
+                  post={post}
+                  onDeletePost={handleDeletePostById}
+                />
               );
             })}
 
@@ -68,15 +64,12 @@ const UserPostsFeed = ({ refetchPostsFlag, setRefetchPostsFlag }: Props) => {
             </>
           )}
 
-          {noOfPages > 1 && inView && page !== noOfPages && (
-            <div className="flex items-center justify-center">
-              <Button
-                onClick={() => setPage((prevPage) => prevPage + 1)}
-                className="bg-teal-500 text-white hover:bg-teal-600 hover:duration-300"
-              >
-                Load More
-              </Button>
-            </div>
+          {noOfPages > 1 && (
+            <Pagination
+              noOfPages={noOfPages}
+              setPage={setPage}
+              currentPage={page}
+            />
           )}
         </div>
       </div>

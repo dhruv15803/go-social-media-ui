@@ -26,18 +26,7 @@ export const usePostsFeed = (
           withCredentials: true,
         });
 
-        if (response.data.posts !== null) {
-          setPosts((prevPosts) =>
-            prevPosts !== null
-              ? [...prevPosts, ...response.data.posts!]
-              : response.data.posts
-          );
-        } else {
-          setPosts((prevPosts) =>
-            prevPosts !== null ? prevPosts : response.data.posts
-          );
-        }
-
+        setPosts(response.data.posts);
         setNoOfPages(response.data.noOfPages);
       } catch (error) {
         toast("failed to fetch feed");
