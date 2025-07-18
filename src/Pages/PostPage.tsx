@@ -4,18 +4,15 @@ import Pagination from "@/components/Pagination";
 import PostCard from "@/components/PostCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { POSTS_PER_PAGE } from "@/consts";
-import { AuthContext } from "@/Contexts/AuthContext";
 import { usePostComments } from "@/Hooks/usePostComments";
 import { usePostWithMetaData } from "@/Hooks/usePostWithMetaData";
-import type { AuthContextType } from "@/types";
 import axios from "axios";
 import { ArrowLeft, Loader } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 
 const PostPage = () => {
   const navigate = useNavigate();
-  const { loggedInUser } = useContext(AuthContext) as AuthContextType;
   const { postId } = useParams<{ postId: string }>();
   if (postId === undefined) return;
   const { post, isLoading: isPostLoading } = usePostWithMetaData(
@@ -121,15 +118,11 @@ const PostPage = () => {
                 Comments ({postCommentsCount})
               </div>
 
-              {loggedInUser !== null && (
-                <CreatePost
-                  parentPostId={post.id}
-                  setRefetchPostsFlag={setRefetchCommentsFlag}
-                  onCreateComment={() =>
-                    setPostCommentsCount((prev) => prev + 1)
-                  }
-                />
-              )}
+              <CreatePost
+                parentPostId={post.id}
+                setRefetchPostsFlag={setRefetchCommentsFlag}
+                onCreateComment={() => setPostCommentsCount((prev) => prev + 1)}
+              />
 
               {comments !== null &&
                 comments.map((comment) => {

@@ -22,9 +22,7 @@ const HomePage = () => {
   return (
     <>
       <div>
-        {loggedInUser !== null && (
-          <CreatePost setRefetchPostsFlag={setRefetchPostsFlag} />
-        )}
+        <CreatePost setRefetchPostsFlag={setRefetchPostsFlag} />
         {loggedInUser !== null ? (
           <UserPostsFeed
             refetchPostsFlag={refetchPostsFlag}

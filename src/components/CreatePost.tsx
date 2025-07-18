@@ -34,9 +34,8 @@ const CreatePost = ({
           ? localStorage.getItem(`create_comment_image_urls_${parentPostId}`)!
           : `[]`
       );
-  const { loggedInUser, isLoggedInUserLoading } = useContext(
-    AuthContext
-  ) as AuthContextType;
+  const { loggedInUser, isLoggedInUserLoading, setIsLoginModalOpen } =
+    useContext(AuthContext) as AuthContextType;
   const [postContent, setPostContent] = useState<string>("");
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
   const [isUploadingFiles, setIsUploadingFiles] = useState<boolean>(false);
@@ -103,6 +102,11 @@ const CreatePost = ({
   const handleCreatePost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!loggedInUser) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+
     const isPostWithImages = postImageUrls.length !== 0;
 
     try {
@@ -158,23 +162,23 @@ const CreatePost = ({
     );
   }
 
-  if (loggedInUser === null) {
-    return <></>;
-  }
-
   return (
     <>
       <div className="border-2 rounded-lg p-4 flex flex-col">
         <div className="flex items-center gap-2">
-          {loggedInUser.image_url !== null && loggedInUser.image_url !== "" ? (
+          {loggedInUser !== null &&
+          loggedInUser?.image_url !== null &&
+          loggedInUser?.image_url !== "" ? (
             <img
-              src={loggedInUser.image_url}
+              src={loggedInUser?.image_url}
               className="rounded-full w-12 h-12"
             />
           ) : (
             <UserIcon />
           )}
-          <span className="font-semibold">@{loggedInUser.username}</span>
+          <span className="font-semibold">
+            @{loggedInUser?.username ? loggedInUser.username : "guest123"}
+          </span>
         </div>
 
         {isUploadingFiles ? (
