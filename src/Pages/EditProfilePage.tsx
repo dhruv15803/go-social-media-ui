@@ -140,7 +140,11 @@ const EditProfilePage = () => {
                 name="imageUrl"
               />
             </div>
-            {newImageUrl ? (
+            {isSubmittingImage ? (
+              <>
+                <Loader />
+              </>
+            ) : newImageUrl !== "" ? (
               <img className="rounded-full p-2 w-32 h-auto" src={newImageUrl} />
             ) : (
               <UserIcon />
