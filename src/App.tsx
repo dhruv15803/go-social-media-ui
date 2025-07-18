@@ -31,6 +31,8 @@ function App() {
                   path="/user/:userId/profile"
                   element={<UserProfilePage />}
                 />
+                <Route path="/signup" element={<RegisterPage />} />
+                <Route path="/signin" element={<LoginPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route element={<ProtectedRoute />}>
                   <Route
@@ -46,8 +48,6 @@ function App() {
 
               <Route path="/reset-password" element={<ResetPasswordPage />} />
               <Route path="/verify-email" element={<VerifyEmail />} />
-              <Route path="/signup" element={<RegisterPage />} />
-              <Route path="/signin" element={<LoginPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             </Routes>
           </LoginDialogLayout>
