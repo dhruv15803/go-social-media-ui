@@ -57,7 +57,7 @@ const NotificationCard = ({ notification }: Props) => {
             className="flex flex-row gap-2 w-full hover:bg-gray-50 hover:duration-300 p-2"
           >
             <div className="flex items-center flex-wrap gap-1 w-fit max-w-[60%]">
-              {post.post_images.map((postImage) => {
+              {post.post_images?.map((postImage) => {
                 return (
                   <img
                     key={postImage.id}

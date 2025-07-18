@@ -54,7 +54,7 @@ export type PostWithUser = Post & {
 };
 
 export type PostWithUserAndImages = PostWithUser & {
-  post_images: PostImage[];
+  post_images: PostImage[] | null;
 };
 
 export type PostWithMetaData = PostWithUserAndImages & {
