@@ -27,6 +27,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { BsThreeDots } from "react-icons/bs";
+import PostLikesDialog from "./PostLikesDialog";
 
 type Props = {
   post: PostWithMetaData;
@@ -52,6 +53,8 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
     isLoading: isBookmarksLoading,
     setBookmarks,
   } = usePostBookmarks(post.id);
+  const [isPostLikesDialogOpen, setIsPostLikesDialogOpen] =
+    useState<boolean>(false);
 
   const isLikedByLoggedInUser = useMemo(
     () =>
@@ -279,13 +282,27 @@ const PostCard = ({ post, postCommentsCount, onDeletePost }: Props) => {
           {isLikesLoading ? (
             <Loader />
           ) : (
-            <button
-              onClick={handleLikePost}
-              className="flex items-center gap-1"
-            >
-              {isLikedByLoggedInUser ? <FaThumbsUp /> : <FaRegThumbsUp />}
-              <span>{postLikesCount}</span>
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={handleLikePost}
+                className="flex items-center gap-1"
+              >
+                {isLikedByLoggedInUser ? <FaThumbsUp /> : <FaRegThumbsUp />}
+              </button>
+              <span
+                className="cursor-pointer"
+                onClick={() => setIsPostLikesDialogOpen(true)}
+              >
+                {postLikesCount}
+              </span>
+              {isPostLikesDialogOpen && (
+                <PostLikesDialog
+                  isDialogOpen={isPostLikesDialogOpen}
+                  setIsDialogOpen={setIsPostLikesDialogOpen}
+                  postId={post.id}
+                />
+              )}
+            </div>
           )}
 
           <button
